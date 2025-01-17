@@ -16,8 +16,6 @@ const message = [{
     wind: "4 km/h",
     humidity: "90%",
     clouds : 1,
-    sunrise: "",
-    sunset: "",
 }];
 
 console.log(message);
@@ -31,26 +29,24 @@ app.get('/', (req, res) => {
             const data = response.data;
             const cityName = data.name;
             const temperature = data.main.temp;
-            const sunsetTime = new Date(data.sys.sunset * 1000).toLocaleTimeString();
+            const pressure = data.main.pressure;
             const wind = data.wind.speed;
             const description = data.weather[0].description;
             const clouds = data.clouds.all;
-            const sunriseTime = new Date(data.sys.sunrise * 1000).toLocaleTimeString();
+            const humidity = data.main.humidity;
+            const feelsLike = data.main.feels_like;
 
-
-            // Update the first object in the message array
             message[0].name = cityName;
             message[0].temp = `${temperature}°C`;
             message[0].wind = `${wind} km/h`;
-            message[0].humidity = sunsetTime;
-            message[0].description = description;
-            message[0].clouds = clouds;
-            message[0].sunrise = sunriseTime;
-            message[0].sunset = sunsetTime;      
+            message[0].humidity = `${humidity} %`;
+            message[0].description = `${description}`;
+            message[0].clouds = `${clouds} `;
+            message[0].pressure = `${pressure} mbar`;
+            message[0].feelsLike = `${feelsLike} °C`;
 
             console.log(message);
 
-            // Return the updated message array as JSON
             res.json(message);
         })
         .catch(error => {
